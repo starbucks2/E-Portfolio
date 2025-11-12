@@ -156,11 +156,11 @@ window.addEventListener('scroll', () => {
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(15, 23, 42, 0.98)';
-        navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+        navbar.style.background = 'rgba(15, 15, 15, 0.98)';
+        navbar.style.boxShadow = '0 4px 20px rgba(212, 175, 55, 0.15)';
     } else {
-        navbar.style.background = 'rgba(15, 23, 42, 0.95)';
-        navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        navbar.style.background = 'rgba(15, 15, 15, 0.9)';
+        navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.2)';
     }
 });
 
@@ -249,3 +249,66 @@ if (statsSection) {
 }
 
 console.log('Portfolio loaded successfully! 🚀');
+
+// ===== 3D Tilt Effect with Golden Shine =====
+const initTiltEffects = () => {
+    const tiltEls = document.querySelectorAll('.tilt');
+    if (!tiltEls.length) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const maxTilt = 12; // degrees
+
+    tiltEls.forEach(el => {
+        let rect = null;
+        let rafId = null;
+        let currentX = 0, currentY = 0;
+
+        const update = () => {
+            // compute percent from center
+            const px = (currentX - rect.left) / rect.width;
+            const py = (currentY - rect.top) / rect.height;
+            const rx = (0.5 - py) * (maxTilt * 2);
+            const ry = (px - 0.5) * (maxTilt * 2);
+
+            // shine intensity based on distance from center
+            const dx = Math.abs(px - 0.5) * 2;
+            const dy = Math.abs(py - 0.5) * 2;
+            const intensity = Math.max(0, 1 - Math.hypot(dx, dy));
+            el.style.setProperty('--shine', (0.15 * intensity).toFixed(3));
+
+            el.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+            rafId = null;
+        };
+
+        const onEnter = () => {
+            rect = el.getBoundingClientRect();
+            if (!prefersReduced) {
+                el.style.transition = 'transform 120ms ease';
+            }
+        };
+
+        const onMove = (e) => {
+            if (!rect) rect = el.getBoundingClientRect();
+            currentX = e.clientX;
+            currentY = e.clientY;
+            if (!rafId) rafId = requestAnimationFrame(update);
+        };
+
+        const onLeave = () => {
+            el.style.transition = 'transform 300ms ease';
+            el.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            el.style.setProperty('--shine', 0);
+        };
+
+        el.addEventListener('mouseenter', onEnter);
+        el.addEventListener('mousemove', onMove);
+        el.addEventListener('mouseleave', onLeave);
+
+        // Recalculate on resize/scroll
+        ['scroll', 'resize'].forEach(evt => window.addEventListener(evt, () => {
+            rect = el.getBoundingClientRect();
+        }));
+    });
+};
+
+window.addEventListener('DOMContentLoaded', initTiltEffects);
