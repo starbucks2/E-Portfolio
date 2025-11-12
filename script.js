@@ -312,3 +312,52 @@ const initTiltEffects = () => {
 };
 
 window.addEventListener('DOMContentLoaded', initTiltEffects);
+
+// ===== Lightbox for Certificates (Gallery) =====
+(() => {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImage');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const items = document.querySelectorAll('.gallery-item');
+
+    if (!lightbox || !lightboxImg || !items.length) return;
+
+    const openLightbox = (src, alt) => {
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || 'Certificate preview';
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeLightbox = () => {
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightboxImg.src = '';
+        document.body.style.overflow = '';
+    };
+
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            const img = item.querySelector('img');
+            if (img && img.src) {
+                openLightbox(img.src, img.alt);
+            }
+        });
+    });
+
+    // Close controls
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        // close if clicking backdrop outside the image or the close button
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+            closeLightbox();
+        }
+    });
+})();

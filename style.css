@@ -532,6 +532,51 @@ body::before {
     opacity: 1;
 }
 
+/* ===== Lightbox Modal ===== */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(4px);
+}
+
+.lightbox.open {
+    display: flex;
+}
+
+.lightbox img {
+    max-width: 90vw;
+    max-height: 85vh;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.25), 0 0 0 1px rgba(255, 215, 0, 0.15) inset;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(212,175,55,0.5);
+    background: radial-gradient(circle at 30% 30%, rgba(212,175,55,0.25), rgba(0,0,0,0.6));
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lightbox-close:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+}
+
 .gallery-overlay h3 {
     color: var(--text-primary);
     font-size: 1.3rem;
