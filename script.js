@@ -248,6 +248,32 @@ if (statsSection) {
     statsObserver.observe(statsSection);
 }
 
+// ===== Resume Download Functionality =====
+const downloadResumeBtn = document.getElementById('downloadResume');
+if (downloadResumeBtn) {
+    downloadResumeBtn.addEventListener('click', () => {
+        // Create a link to download the existing resume.docx file
+        const link = document.createElement('a');
+        link.href = 'resume.docx';
+        link.download = 'resume.docx';
+        link.style.visibility = 'hidden';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Show success message
+        const originalText = downloadResumeBtn.innerHTML;
+        downloadResumeBtn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+        downloadResumeBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+        
+        setTimeout(() => {
+            downloadResumeBtn.innerHTML = originalText;
+            downloadResumeBtn.style.background = '';
+        }, 2000);
+    });
+}
+
 console.log('Portfolio loaded successfully! 🚀');
 
 // ===== 3D Tilt Effect with Golden Shine =====

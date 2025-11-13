@@ -741,10 +741,214 @@ body::before {
     color: var(--text-secondary);
 }
 
+/* ===== Hire Me Section ===== */
+.hire-me {
+    padding: 100px 20px;
+    background: var(--dark-bg);
+}
+
+.hire-me-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.hire-me-text h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hire-me-text p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.availability-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.availability-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-secondary);
+}
+
+.availability-item i {
+    width: 40px;
+    height: 40px;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.hire-me-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.hire-stat-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--light-bg);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.hire-stat-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
+}
+
+.hire-stat-item h4 {
+    font-size: 1.8rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.hire-stat-item p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.hire-me-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.resume-download,
+.contact-quick,
+.services-offered {
+    background: var(--light-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.resume-download:hover,
+.contact-quick:hover,
+.services-offered:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+}
+
+.resume-download h4,
+.contact-quick h4,
+.services-offered h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.resume-download p,
+.contact-quick p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.download-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    padding: 15px 30px;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+}
+
+.download-btn i {
+    font-size: 1.1rem;
+}
+
+.quick-contact-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.quick-contact-buttons .btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 120px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.service-item {
+    background: var(--dark-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.service-item:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+}
+
+.service-item i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.service-item h5 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.service-item p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
 /* ===== Contact Section ===== */
 .contact {
     padding: 100px 20px;
-    background: var(--dark-bg);
+    background: var(--light-bg);
 }
 
 .contact-content {
@@ -914,6 +1118,23 @@ body::before {
 
     .contact-content {
         grid-template-columns: 1fr;
+    }
+
+    .hire-me-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .hire-me-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-contact-buttons {
+        flex-direction: column;
     }
 
     .footer .container {
