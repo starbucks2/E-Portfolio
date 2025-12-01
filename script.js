@@ -93,7 +93,7 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements for scroll animation
-const animateOnScroll = document.querySelectorAll('.skill-card, .project-card, .stat-item, .about-content, .contact-content');
+const animateOnScroll = document.querySelectorAll('.skill-card, .project-card, .stat-item, .about-content, .contact-content, .education-card');
 animateOnScroll.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
