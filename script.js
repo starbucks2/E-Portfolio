@@ -1,3 +1,166 @@
+/**
+ * 3D Background & Creative Animations
+ * Inspired by Guillaume Gouessan's portfolio
+ */
+
+// Global state for 3D and mouse
+const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+const canvas = document.getElementById('bg-canvas');
+
+class ThreeBackground {
+    constructor() {
+        if (!canvas) return;
+        this.init();
+        this.createObjects();
+        this.addLights();
+        this.animate();
+        this.listeners();
+    }
+
+    init() {
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.camera.position.z = 5;
+
+        this.renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance"
+        });
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    createObjects() {
+        // Reduced segment count for smoother performance (32 instead of 64)
+        const geometry = new THREE.IcosahedronGeometry(2, 32);
+
+        // Custom Shader Material for a fluid gold look
+        this.material = new THREE.MeshPhysicalMaterial({
+            color: 0xd4af37,
+            metalness: 0.9,
+            roughness: 0.1,
+            transmission: 0.5,
+            thickness: 1,
+            iridescence: 1,
+            wireframe: false
+        });
+
+        this.mesh = new THREE.Mesh(geometry, this.material);
+        this.scene.add(this.mesh);
+
+        // Store original positions for vertex manipulation
+        this.originalPositions = geometry.attributes.position.array.slice();
+    }
+
+    addLights() {
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        this.scene.add(ambientLight);
+
+        this.pointLight = new THREE.PointLight(0xf7e7ce, 20);
+        this.pointLight.position.set(5, 5, 5);
+        this.scene.add(this.pointLight);
+
+        const blueLight = new THREE.PointLight(0x00aaff, 10);
+        blueLight.position.set(-5, -5, 2);
+        this.scene.add(blueLight);
+    }
+
+    animate() {
+        const time = Date.now() * 0.0008;
+        const scrollY = window.scrollY || window.pageYOffset;
+        const scrollTarget = scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+
+        // Interpolated scroll for ultra-smoothness
+        if (this.currentScroll === undefined) this.currentScroll = 0;
+        this.currentScroll += (scrollTarget - this.currentScroll) * 0.1;
+
+        // Smooth mouse follow
+        mouse.x += (mouse.targetX - mouse.x) * 0.05;
+        mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+        if (this.mesh) {
+            // Reactive rotation based on mouse and scroll
+            this.mesh.rotation.y = time * 0.15 + mouse.x * 0.4 + this.currentScroll * 3;
+            this.mesh.rotation.x = time * 0.1 + mouse.y * 0.3;
+
+            // Transform based on scroll
+            this.mesh.position.y = -this.currentScroll * 4;
+            this.mesh.position.z = -this.currentScroll * 2;
+
+            // Dynamic scale pulse
+            const s = 1 + Math.sin(time) * 0.05 + this.currentScroll * 0.2;
+            this.mesh.scale.set(s, s, s);
+
+            // CPU-efficient vertex distortion
+            const positions = this.mesh.geometry.attributes.position.array;
+            for (let i = 0; i < positions.length; i += 3) {
+                const x = this.originalPositions[i];
+                const y = this.originalPositions[i + 1];
+                const z = this.originalPositions[i + 2];
+
+                const noise = Math.sin(x * 1.2 + time) * Math.cos(y * 1.2 + time) * 0.15;
+
+                positions[i] = x * (1 + noise);
+                positions[i + 1] = y * (1 + noise);
+                positions[i + 2] = z * (1 + noise);
+            }
+            this.mesh.geometry.attributes.position.needsUpdate = true;
+        }
+
+        // Move light with mouse and scroll
+        this.pointLight.position.x = mouse.x * 12;
+        this.pointLight.position.y = -mouse.y * 12 - (this.currentScroll * 5);
+
+        this.renderer.render(this.scene, this.camera);
+        requestAnimationFrame(() => this.animate());
+    }
+
+    listeners() {
+        window.addEventListener('mousemove', (e) => {
+            mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        window.addEventListener('resize', () => {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
+}
+
+// Initialize on load
+window.addEventListener('DOMContentLoaded', () => {
+    new ThreeBackground();
+
+    // GSAP Hero Reveal
+    gsap.from('.hero-title', {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        delay: 0.5
+    });
+
+    gsap.from('.hero-subtitle', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+        delay: 0.8
+    });
+
+    // Initialize Lenis
+    const lenis = new Lenis();
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+});
+
 // ===== Mobile Navigation Toggle =====
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
@@ -20,7 +183,7 @@ navLinks.forEach(link => {
 window.addEventListener('scroll', () => {
     let current = '';
     const sections = document.querySelectorAll('section');
-    
+
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
@@ -53,7 +216,7 @@ const checkSkillsScroll = () => {
     if (!skillsAnimated && skillsSection) {
         const skillsPosition = skillsSection.getBoundingClientRect().top;
         const screenPosition = window.innerHeight;
-        
+
         if (skillsPosition < screenPosition) {
             animateSkills();
             skillsAnimated = true;
@@ -106,13 +269,13 @@ const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         // Get form values
         const name = contactForm.querySelector('input[type="text"]').value;
         const email = contactForm.querySelector('input[type="email"]').value;
         const subject = contactForm.querySelectorAll('input[type="text"]')[1].value;
         const message = contactForm.querySelector('textarea').value;
-        
+
         // Simple validation
         if (name && email && subject && message) {
             // Show success message (you can customize this)
@@ -130,7 +293,7 @@ if (heroTitle) {
     const text = heroTitle.textContent;
     heroTitle.textContent = '';
     let i = 0;
-    
+
     const typeWriter = () => {
         if (i < text.length) {
             heroTitle.textContent += text.charAt(i);
@@ -138,7 +301,7 @@ if (heroTitle) {
             setTimeout(typeWriter, 100);
         }
     };
-    
+
     // Start typing effect after a short delay
     setTimeout(typeWriter, 500);
 }
@@ -168,39 +331,39 @@ window.addEventListener('scroll', () => {
 const createCursorTrail = () => {
     const coords = { x: 0, y: 0 };
     const circles = document.querySelectorAll('.cursor-circle');
-    
+
     if (circles.length === 0) return;
-    
+
     circles.forEach((circle, index) => {
         circle.x = 0;
         circle.y = 0;
     });
-    
+
     window.addEventListener('mousemove', (e) => {
         coords.x = e.clientX;
         coords.y = e.clientY;
     });
-    
+
     const animateCircles = () => {
         let x = coords.x;
         let y = coords.y;
-        
+
         circles.forEach((circle, index) => {
             circle.style.left = x - 12 + 'px';
             circle.style.top = y - 12 + 'px';
             circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
-            
+
             circle.x = x;
             circle.y = y;
-            
+
             const nextCircle = circles[index + 1] || circles[0];
             x += (nextCircle.x - x) * 0.3;
             y += (nextCircle.y - y) * 0.3;
         });
-        
+
         requestAnimationFrame(animateCircles);
     };
-    
+
     animateCircles();
 };
 
@@ -213,7 +376,7 @@ if (document.querySelectorAll('.cursor-circle').length > 0) {
 const animateCounter = (element, target, duration = 2000) => {
     let start = 0;
     const increment = target / (duration / 16);
-    
+
     const updateCounter = () => {
         start += increment;
         if (start < target) {
@@ -223,7 +386,7 @@ const animateCounter = (element, target, duration = 2000) => {
             element.textContent = target + '+';
         }
     };
-    
+
     updateCounter();
 };
 
@@ -244,7 +407,7 @@ if (statsSection) {
             }
         });
     }, { threshold: 0.5 });
-    
+
     statsObserver.observe(statsSection);
 }
 
@@ -257,16 +420,16 @@ if (downloadResumeBtn) {
         link.href = 'resume.docx';
         link.download = 'resume.docx';
         link.style.visibility = 'hidden';
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         // Show success message
         const originalText = downloadResumeBtn.innerHTML;
         downloadResumeBtn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
         downloadResumeBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-        
+
         setTimeout(() => {
             downloadResumeBtn.innerHTML = originalText;
             downloadResumeBtn.style.background = '';

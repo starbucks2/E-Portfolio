@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio - Creative Developer</title>
+    <title>Roy D. Juntilla | Creative Full Stack Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.20/dist/lenis.css">
 </head>
+
 <body>
+    <!-- 3D Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -49,22 +64,22 @@
                     <a href="#contact" class="btn btn-secondary">Get In Touch</a>
                 </div>
                 <div class="social-links">
-                    <a href="https://github.com/starbucks2" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
-                    <a href="https://web.facebook.com/roy.juntilla.77" target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/syntaxroy/" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/starbucks2" target="_blank" class="social-icon"><i
+                            class="fab fa-github"></i></a>
+                    <a href="https://web.facebook.com/roy.juntilla.77" target="_blank" class="social-icon"><i
+                            class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/syntaxroy/" target="_blank" class="social-icon"><i
+                            class="fab fa-instagram"></i></a>
                 </div>
             </div>
             <div class="hero-image">
                 <div class="image-container tilt">
                     <img src="images/RDJ2.jpg" alt="Roy D. Juntilla" class="profile-pic">
-                    <div class="floating-shape shape-1"></div>
-                    <div class="floating-shape shape-2"></div>
-                    <div class="floating-shape shape-3"></div>
+                    <div class="pic-backdrop"></div>
                 </div>
             </div>
         </div>
         <div class="scroll-indicator">
-            <span>Scroll Down</span>
             <i class="fas fa-chevron-down"></i>
         </div>
     </section>
@@ -280,14 +295,18 @@
             <h2 class="section-title">My Projects</h2>
             <div class="projects-grid">
                 <div class="project-card tilt">
-                    <div class="project-image" style="background: url('Bnhslogo.png') center/contain no-repeat, #151515; min-height: 250px; display: flex; align-items: center; justify-content: center;">
+                    <div class="project-image"
+                        style="background: url('Bnhslogo.png') center/contain no-repeat, #151515; min-height: 250px; display: flex; align-items: center; justify-content: center;">
                         <div class="project-overlay">
-                            <a href="https://bnhsresearchhub.com" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                            <a href="https://bnhsresearchhub.com/bnhs_orr" target="_blank" class="project-link"><i
+                                    class="fas fa-external-link-alt"></i></a>
                         </div>
                     </div>
                     <div class="project-info">
                         <h3>BNHS Online Research Repository </h3>
-                        <p>This is my capstone project - an online research repository system for Becuran National High School. It enables students and faculty to upload, search, and access academic research papers efficiently.</p>
+                        <p>This is my capstone project - an online research repository system for Becuran National High
+                            School. It enables students and faculty to upload, search, and access academic research
+                            papers efficiently.</p>
                         <div class="project-tags">
                             <span class="tag">HTML5</span>
                             <span class="tag">CSS3</span>
@@ -406,7 +425,8 @@
             <div class="contact-content">
                 <div class="contact-info">
                     <h3>Let's work together!</h3>
-                    <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                    <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your
+                        vision.</p>
                     <div class="contact-details">
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
@@ -423,12 +443,9 @@
                     </div>
                     <!-- Embedded Google Map -->
                     <div class="map-container tilt" aria-label="Google Map location">
-                        <iframe
-                            title="Location Map"
+                        <iframe title="Location Map"
                             src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d963.40173751096!2d120.58262903022155!3d15.01450837509716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sZone%202%20Dila-Dila%20Sta%20Rita%20Pampang!5e0!3m2!1sen!2sph!4v1762928130673!5m2!1sen!2sph"
-                            width="600" height="450" style="border:0;"
-                            allowfullscreen=""
-                            loading="lazy"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
@@ -456,13 +473,17 @@
         <div class="container">
             <p>&copy; 2025 My Portfolio. All rights reserved.</p>
             <div class="footer-social">
-                <a href="https://github.com/starbucks2" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
-                <a href="https://web.facebook.com/roy.juntilla.77" target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.instagram.com/syntaxroy/" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/starbucks2" target="_blank" class="social-icon"><i
+                        class="fab fa-github"></i></a>
+                <a href="https://web.facebook.com/roy.juntilla.77" target="_blank" class="social-icon"><i
+                        class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/syntaxroy/" target="_blank" class="social-icon"><i
+                        class="fab fa-instagram"></i></a>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
+
 </html>
