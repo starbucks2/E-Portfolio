@@ -280,10 +280,10 @@ if (statsSection) {
 const downloadResumeBtn = document.getElementById('downloadResume');
 if (downloadResumeBtn) {
     downloadResumeBtn.addEventListener('click', () => {
-        // Create a link to download the existing resume.docx file
+        // Create a link to download the existing PDF resume file
         const link = document.createElement('a');
-        link.href = 'resume.docx';
-        link.download = 'resume.docx';
+        link.href = 'Roy D. Juntilla.pdf';
+        link.download = 'Roy D. Juntilla.pdf';
         link.style.visibility = 'hidden';
 
         document.body.appendChild(link);
