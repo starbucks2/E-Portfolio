@@ -304,6 +304,10 @@ if (downloadResumeBtn) {
 
 console.log('Portfolio loaded successfully! 🚀');
 
+// ===== Auto-update footer year =====
+const footerYear = document.getElementById('footer-year');
+if (footerYear) footerYear.textContent = new Date().getFullYear();
+
 // ===== Lightbox for Certificates (Gallery) =====
 (() => {
     const lightbox = document.getElementById('lightbox');
